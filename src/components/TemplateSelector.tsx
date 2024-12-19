@@ -2,9 +2,9 @@ import React from "react";
 import { Card } from "@/components/ui/card";
 
 const templates = [
-  { id: 1, name: "Revelação Misteriosa", style: "Noir" },
-  { id: 2, name: "Produto Dark", style: "Minimalista" },
-  { id: 3, name: "Promo Ousada", style: "Cyberpunk" },
+  { id: 1, name: "Apresentação de Produto", style: "Moderno" },
+  { id: 2, name: "Vídeo Explicativo", style: "Minimalista" },
+  { id: 3, name: "Promocional", style: "Dinâmico" },
 ];
 
 const TemplateSelector = () => {

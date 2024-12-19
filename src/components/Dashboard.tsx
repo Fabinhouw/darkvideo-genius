@@ -1,25 +1,37 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import VideoPreview from "./VideoPreview";
 import TemplateSelector from "./TemplateSelector";
-import { Settings2, Play, Download } from "lucide-react";
+import { Play, Download, Settings2 } from "lucide-react";
+import { toast } from "sonner";
 
 const Dashboard = () => {
   const [prompt, setPrompt] = React.useState("");
   const [isGenerating, setIsGenerating] = React.useState(false);
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
+    if (!prompt.trim()) {
+      toast.error("Por favor, descreva seu vídeo primeiro");
+      return;
+    }
+
     setIsGenerating(true);
-    // Simulate video generation
-    setTimeout(() => setIsGenerating(false), 2000);
+    try {
+      // Simulação da geração do vídeo
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      toast.success("Vídeo gerado com sucesso!");
+    } catch (error) {
+      toast.error("Erro ao gerar o vídeo. Tente novamente.");
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   return (
     <div className="min-h-screen bg-background p-6">
-      {/* Floating Particles */}
+      {/* Partículas flutuantes para efeito visual */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         {[...Array(20)].map((_, i) => (
           <div
@@ -39,19 +51,19 @@ const Dashboard = () => {
       <div className="max-w-7xl mx-auto space-y-8">
         <header className="text-center space-y-4">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-            Gerador de Vídeos Dark
+            Gerador de Vídeos
           </h1>
           <p className="text-muted-foreground">
-            Crie vídeos impressionantes apenas com comandos de texto
+            Transforme suas ideias em vídeos incríveis
           </p>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <Card className="p-6 space-y-6 bg-card/50 backdrop-blur">
             <div className="space-y-4">
-              <h2 className="text-xl font-semibold">Prompt do Vídeo</h2>
+              <h2 className="text-xl font-semibold">Descreva seu vídeo</h2>
               <Textarea
-                placeholder="Descreva seu conceito de vídeo..."
+                placeholder="Ex: Um vídeo mostrando um produto tecnológico com efeitos futuristas..."
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
                 className="h-32 bg-background/50"
@@ -66,11 +78,11 @@ const Dashboard = () => {
                     "Gerando..."
                   ) : (
                     <>
-                      <Play className="w-4 h-4 mr-2" /> Gerar
+                      <Play className="w-4 h-4 mr-2" /> Gerar Vídeo
                     </>
                   )}
                 </Button>
-                <Button variant="outline" size="icon">
+                <Button variant="outline" size="icon" title="Configurações avançadas">
                   <Settings2 className="w-4 h-4" />
                 </Button>
               </div>
@@ -81,10 +93,10 @@ const Dashboard = () => {
 
           <Card className="p-6 space-y-6 bg-card/50 backdrop-blur">
             <div className="space-y-4">
-              <h2 className="text-xl font-semibold">Pré-visualização</h2>
+              <h2 className="text-xl font-semibold">Seu Vídeo</h2>
               <VideoPreview />
-              <Button variant="secondary" className="w-full">
-                <Download className="w-4 h-4 mr-2" /> Exportar Vídeo
+              <Button variant="secondary" className="w-full" disabled={!isGenerating}>
+                <Download className="w-4 h-4 mr-2" /> Baixar Vídeo
               </Button>
             </div>
           </Card>
