@@ -39,19 +39,19 @@ const Dashboard = () => {
       <div className="max-w-7xl mx-auto space-y-8">
         <header className="text-center space-y-4">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-            Dark Video Generator
+            Gerador de Vídeos Dark
           </h1>
           <p className="text-muted-foreground">
-            Create stunning videos with just text prompts
+            Crie vídeos impressionantes apenas com comandos de texto
           </p>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <Card className="p-6 space-y-6 bg-card/50 backdrop-blur">
             <div className="space-y-4">
-              <h2 className="text-xl font-semibold">Video Prompt</h2>
+              <h2 className="text-xl font-semibold">Prompt do Vídeo</h2>
               <Textarea
-                placeholder="Describe your video concept..."
+                placeholder="Descreva seu conceito de vídeo..."
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
                 className="h-32 bg-background/50"
@@ -63,10 +63,10 @@ const Dashboard = () => {
                   disabled={isGenerating}
                 >
                   {isGenerating ? (
-                    "Generating..."
+                    "Gerando..."
                   ) : (
                     <>
-                      <Play className="w-4 h-4 mr-2" /> Generate
+                      <Play className="w-4 h-4 mr-2" /> Gerar
                     </>
                   )}
                 </Button>
@@ -81,10 +81,10 @@ const Dashboard = () => {
 
           <Card className="p-6 space-y-6 bg-card/50 backdrop-blur">
             <div className="space-y-4">
-              <h2 className="text-xl font-semibold">Preview</h2>
+              <h2 className="text-xl font-semibold">Pré-visualização</h2>
               <VideoPreview />
               <Button variant="secondary" className="w-full">
-                <Download className="w-4 h-4 mr-2" /> Export Video
+                <Download className="w-4 h-4 mr-2" /> Exportar Vídeo
               </Button>
             </div>
           </Card>
