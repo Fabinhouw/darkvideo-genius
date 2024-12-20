@@ -33,14 +33,16 @@ const Index = () => {
                 Começar Agora
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="text-lg w-full sm:w-auto" 
-                onClick={() => navigate("/demo")}
-              >
-                Ver Demonstração
-              </Button>
+              {!user && (
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="text-lg w-full sm:w-auto" 
+                  onClick={() => navigate("/demo")}
+                >
+                  Ver Demonstração
+                </Button>
+              )}
             </div>
           </div>
         </section>

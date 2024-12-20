@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { auth, type Profile } from '@/lib/supabase'
+import { auth, supabase, type Profile } from '@/lib/supabase'
 import { useToast } from '@/components/ui/use-toast'
 
 export const useAuth = () => {
@@ -15,10 +15,21 @@ export const useAuth = () => {
 
   const checkUser = async () => {
     try {
-      const { user: currentUser, error } = await auth.getUser()
-      if (error) throw error
-      setUser(currentUser as Profile)
+      const { user: currentUser, error: authError } = await auth.getUser()
+      if (authError) throw authError
+
+      // Buscar o perfil completo do usuário
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', currentUser.id)
+        .single()
+
+      if (profileError) throw profileError
+
+      setUser({ ...currentUser, ...profile } as Profile)
     } catch (error) {
+      console.error('Error checking user:', error)
       setUser(null)
     } finally {
       setLoading(false)
@@ -30,6 +41,8 @@ export const useAuth = () => {
       setLoading(true)
       const { error } = await auth.signIn(email, password)
       if (error) throw error
+      
+      await checkUser() // Atualizar o usuário após login
       
       toast({
         title: "Login realizado com sucesso!",
