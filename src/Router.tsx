@@ -7,6 +7,7 @@ import Tutorials from "./pages/Tutorials";
 import Pricing from "./pages/Pricing";
 import Demo from "./pages/Demo";
 import Dashboard from "@/components/Dashboard";
+import Settings from "./pages/Settings"; // Added import statement for Settings
 
 export function Router() {
   return (
@@ -19,6 +20,7 @@ export function Router() {
       <Route path="/pricing" element={<Pricing />} />
       <Route path="/demo" element={<Demo />} />
       <Route path="/editor" element={<Dashboard />} />
+      <Route path="/settings" element={<Settings />} />
     </Routes>
   );
 }
