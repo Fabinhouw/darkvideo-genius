@@ -39,12 +39,6 @@ export function MobileMenu() {
             Templates
           </Link>
           <Link
-            to="/tutorials"
-            className="text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Tutoriais
-          </Link>
-          <Link
             to="/pricing"
             className="text-muted-foreground hover:text-foreground transition-colors"
           >

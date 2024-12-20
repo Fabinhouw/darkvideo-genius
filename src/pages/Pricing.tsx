@@ -1,55 +1,58 @@
 import Header from "@/components/Header";
-import { Check, Lock } from "lucide-react";
+import { Check, Sparkles } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { supabase } from "@/lib/supabase";
+import { Button } from "@/components/ui/button";
+import Footer from "@/components/Footer";
+
+const PLANS = {
+  FREE: {
+    id: 'FREE',
+    name: 'Grátis',
+    description: 'Para usuários iniciantes',
+    price: 'R$ 0',
+    period: '/mês',
+    features: [
+      'Até 5 vídeos por mês',
+      'Resolução 720p',
+      'Suporte básico'
+    ]
+  },
+  PLUS: {
+    id: 'PLUS',
+    name: 'Plus',
+    description: 'Para criadores de conteúdo',
+    price: 'R$ 29,90',
+    period: '/mês',
+    features: [
+      'Até 50 vídeos por mês',
+      'Resolução 1080p',
+      'Suporte prioritário',
+      'Sem marca d\'água'
+    ]
+  },
+  PRO: {
+    id: 'PRO',
+    name: 'Pro',
+    description: 'Para profissionais',
+    price: 'R$ 59,90',
+    period: '/mês',
+    features: [
+      'Vídeos ilimitados',
+      'Resolução 4K',
+      'Suporte 24/7',
+      'Sem marca d\'água',
+      'API access'
+    ]
+  }
+};
 
 const Pricing = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-
-  const plans = [
-    {
-      id: "FREE",
-      name: "Free",
-      price: "Grátis",
-      features: [
-        "5 vídeos por mês",
-        "Exportação em 720p",
-        "Templates básicos",
-        "Com marca d'água",
-        "Suporte por email"
-      ]
-    },
-    {
-      id: "PLUS",
-      name: "Plus",
-      price: "R$ 29,90/mês",
-      features: [
-        "20 vídeos por mês",
-        "Exportação em 1080p",
-        "Mais templates",
-        "Sem marca d'água",
-        "Suporte prioritário"
-      ]
-    },
-    {
-      id: "PRO",
-      name: "Pro",
-      price: "R$ 59,90/mês",
-      features: [
-        "100 vídeos por mês",
-        "Exportação em 4K",
-        "Todos os templates",
-        "Recursos de IA avançados",
-        "Efeitos profissionais",
-        "Suporte VIP"
-      ]
-    }
-  ];
 
   const handleSubscribe = async (planId: string) => {
     if (!user) {
@@ -59,27 +62,12 @@ const Pricing = () => {
 
     setIsLoading(true);
     try {
-      // Simular processamento de pagamento
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // Registrar assinatura
-      const { error } = await supabase
-        .from('subscriptions')
-        .insert({
-          user_id: user.id,
-          plan: planId,
-          price_paid: planId === 'PLUS' ? 29.90 : planId === 'PRO' ? 59.90 : 0,
-          ends_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 dias
-          payment_method: 'card',
-          payment_id: 'sim_' + Math.random().toString(36).substr(2, 9)
-        });
-
-      if (error) throw error;
-
-      toast.success('Assinatura realizada com sucesso!');
+      // Aqui você pode implementar sua própria lógica de assinatura
+      // Por exemplo, atualizando o plano no seu backend
+      toast.success('Plano atualizado com sucesso!');
       navigate('/editor');
     } catch (error) {
-      toast.error('Erro ao processar assinatura. Tente novamente.');
+      toast.error('Erro ao atualizar o plano. Tente novamente.');
       console.error(error);
     } finally {
       setIsLoading(false);
@@ -89,55 +77,81 @@ const Pricing = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <div className="container mx-auto pt-24 px-4 pb-12">
-        <h1 className="text-4xl font-bold text-center mb-4">Planos e Preços</h1>
-        <p className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto">
-          Escolha o plano ideal para suas necessidades. Cancele a qualquer momento.
-        </p>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {plans.map((plan) => (
-            <div 
-              key={plan.id} 
-              className={`bg-card rounded-lg p-6 shadow-lg border border-border relative
-                ${plan.id === 'PRO' ? 'ring-2 ring-primary' : ''}`}
+      <div className="container mx-auto px-4 py-16">
+        <div className="text-center space-y-4 mb-12">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+            Escolha seu plano
+          </h1>
+          <p className="text-xl text-muted-foreground">
+            Comece gratuitamente e faça upgrade conforme necessário
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+          {Object.values(PLANS).map((plan) => (
+            <div
+              key={plan.id}
+              className={`relative rounded-xl border p-8 shadow-lg transition-all duration-300 hover:shadow-xl
+                ${plan.id === 'PRO' ? 'border-primary bg-accent/5' : 'bg-card/50'}
+              `}
             >
               {plan.id === 'PRO' && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="bg-primary text-primary-foreground text-sm font-medium px-3 py-1 rounded-full">
+                <div className="absolute -top-4 left-0 right-0 flex justify-center">
+                  <div className="bg-primary text-primary-foreground text-sm px-4 py-1.5 rounded-full flex items-center gap-1.5">
+                    <Sparkles className="w-4 h-4" />
                     Mais Popular
-                  </span>
+                  </div>
                 </div>
               )}
-              
-              <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-              <p className="text-3xl font-bold mb-6">{plan.price}</p>
-              <ul className="space-y-4 mb-8">
-                {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-center">
-                    <Check className="w-5 h-5 text-primary mr-2 flex-shrink-0" />
-                    <span className="text-sm">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-              <button 
-                className={`w-full rounded-md py-2 transition
-                  ${plan.id === 'FREE' 
-                    ? 'bg-secondary hover:bg-secondary/90 text-secondary-foreground' 
-                    : 'bg-primary hover:bg-primary/90 text-primary-foreground'}`}
-                onClick={() => handleSubscribe(plan.id)}
-                disabled={isLoading}
-              >
-                {isLoading ? 'Processando...' : plan.id === 'FREE' ? 'Começar Grátis' : 'Assinar Agora'}
-              </button>
+
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-2xl font-bold">{plan.name}</h3>
+                  <p className="text-muted-foreground mt-1">{plan.description}</p>
+                </div>
+
+                <div className="flex items-baseline gap-1">
+                  <span className="text-4xl font-bold">{plan.price}</span>
+                  <span className="text-muted-foreground">{plan.period}</span>
+                </div>
+
+                <Button
+                  className="w-full"
+                  variant={plan.id === 'PRO' ? 'default' : 'outline'}
+                  size="lg"
+                  onClick={() => handleSubscribe(plan.id)}
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'Processando...' : 
+                    plan.id === 'FREE' ? 'Começar Grátis' : 'Assinar Agora'}
+                </Button>
+
+                <div className="space-y-3">
+                  <p className="text-sm font-medium">O que está incluído:</p>
+                  <ul className="space-y-3">
+                    {plan.features.map((feature, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                        <span className="text-muted-foreground">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             </div>
           ))}
         </div>
 
-        <div className="mt-12 text-center text-sm text-muted-foreground">
-          <p>Precisa de mais? Entre em contato para um plano personalizado.</p>
+        <div className="mt-16 text-center">
+          <p className="text-muted-foreground">
+            Precisa de mais recursos?{" "}
+            <a href="#" className="text-primary hover:underline">
+              Entre em contato para um plano personalizado
+            </a>
+          </p>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

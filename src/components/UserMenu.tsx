@@ -9,12 +9,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { LogOut, Moon, Settings, Sun } from "lucide-react";
+import { LogOut, Settings } from "lucide-react";
 
 export function UserMenu() {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
 
   if (!user) return null;
 
@@ -48,22 +48,6 @@ export function UserMenu() {
           </div>
         </div>
         <DropdownMenuSeparator />
-        <DropdownMenuItem 
-          onClick={toggleTheme}
-          className="cursor-pointer"
-        >
-          {theme === 'light' ? (
-            <>
-              <Moon className="mr-2 h-4 w-4" />
-              <span>Tema Escuro</span>
-            </>
-          ) : (
-            <>
-              <Sun className="mr-2 h-4 w-4" />
-              <span>Tema Claro</span>
-            </>
-          )}
-        </DropdownMenuItem>
         <DropdownMenuItem 
           onClick={() => navigate("/settings")}
           className="cursor-pointer"

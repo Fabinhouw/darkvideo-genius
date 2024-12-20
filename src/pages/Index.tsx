@@ -48,13 +48,13 @@ const Index = () => {
         </section>
 
         {/* Features Section */}
-        <section className="py-20 bg-muted/50">
+        <section className="py-20 bg-accent">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
               Por que escolher o DarkVideo?
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-card p-6 rounded-lg border border-border">
+              <div className="bg-card/80 backdrop-blur-sm p-6 rounded-lg border border-border">
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <Video className="w-6 h-6 text-primary" />
                 </div>
@@ -63,7 +63,7 @@ const Index = () => {
                   Interface intuitiva que torna a edição de vídeos acessível a todos.
                 </p>
               </div>
-              <div className="bg-card p-6 rounded-lg border border-border">
+              <div className="bg-card/80 backdrop-blur-sm p-6 rounded-lg border border-border">
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <Wand2 className="w-6 h-6 text-primary" />
                 </div>
@@ -72,7 +72,7 @@ const Index = () => {
                   Recursos avançados de IA para aprimorar seus vídeos automaticamente.
                 </p>
               </div>
-              <div className="bg-card p-6 rounded-lg border border-border">
+              <div className="bg-card/80 backdrop-blur-sm p-6 rounded-lg border border-border">
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <Zap className="w-6 h-6 text-primary" />
                 </div>

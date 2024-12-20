@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { Link } from "react-router-dom";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useAuth } from "@/hooks/useAuth";
@@ -106,6 +107,7 @@ const Register = () => {
           </form>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
