@@ -67,7 +67,23 @@ export const auth = {
   getUser: async () => {
     const { data: { user }, error } = await supabase.auth.getUser()
     return { user, error }
-  }
+  },
+  signInWithGoogle: async () => {
+    const redirectUrl = `${window.location.origin}/auth/callback`;
+    console.log('URL de redirecionamento:', redirectUrl);
+    
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: redirectUrl,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent'
+        }
+      }
+    })
+    return { data, error }
+  },
 }
 
 // Funções para gerenciar perfis

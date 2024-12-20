@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { auth, supabase, type Profile } from '@/lib/supabase'
-import { useToast } from '@/components/ui/use-toast'
+import { toast } from 'sonner'
 
 export const useAuth = () => {
   const [user, setUser] = useState<Profile | null>(null)
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
-  const { toast } = useToast()
 
   useEffect(() => {
     checkUser()
@@ -40,22 +39,20 @@ export const useAuth = () => {
     try {
       setLoading(true)
       const { error } = await auth.signIn(email, password)
-      if (error) throw error
+      if (error) {
+        if (error.message.includes('Invalid login credentials')) {
+          throw new Error('Senha incorreta. Por favor, verifique suas credenciais.')
+        }
+        throw error
+      }
       
       await checkUser() // Atualizar o usuário após login
       
-      toast({
-        title: "Login realizado com sucesso!",
-        description: "Você será redirecionado para o editor.",
-      })
+      toast.success("Login realizado com sucesso! Você será redirecionado para o editor.")
       
       navigate('/editor')
     } catch (error: any) {
-      toast({
-        title: "Erro ao fazer login",
-        description: error.message,
-        variant: "destructive"
-      })
+      toast.error("Erro ao fazer login: " + error.message)
     } finally {
       setLoading(false)
     }
@@ -67,18 +64,11 @@ export const useAuth = () => {
       const { error } = await auth.signUp(email, password)
       if (error) throw error
       
-      toast({
-        title: "Conta criada com sucesso!",
-        description: "Você será redirecionado para fazer login.",
-      })
+      toast.success("Conta criada com sucesso! Você será redirecionado para fazer login.")
       
       navigate('/login')
     } catch (error: any) {
-      toast({
-        title: "Erro ao criar conta",
-        description: error.message,
-        variant: "destructive"
-      })
+      toast.error("Erro ao criar conta: " + error.message)
     } finally {
       setLoading(false)
     }
@@ -91,11 +81,21 @@ export const useAuth = () => {
       setUser(null)
       navigate('/')
     } catch (error: any) {
-      toast({
-        title: "Erro ao sair",
-        description: error.message,
-        variant: "destructive"
-      })
+      toast.error("Erro ao sair: " + error.message)
+    }
+  }
+
+  const signInWithGoogle = async () => {
+    try {
+      setLoading(true)
+      const { error } = await auth.signInWithGoogle()
+      if (error) throw error
+      
+      toast.success("Redirecionando para autenticação do Google...")
+    } catch (error: any) {
+      toast.error("Erro ao fazer login com Google: " + error.message)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -104,6 +104,7 @@ export const useAuth = () => {
     loading,
     signIn,
     signUp,
-    signOut
+    signOut,
+    signInWithGoogle
   }
 }
