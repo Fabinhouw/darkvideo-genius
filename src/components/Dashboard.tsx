@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import VideoPreview from "./VideoPreview";
 import TemplateSelector from "./TemplateSelector";
-import { Play, Download, Settings2 } from "lucide-react";
+import { Play, Download } from "lucide-react";
 import { toast } from "sonner";
 import Header from "./Header";
+import { AdvancedOptions } from "./AdvancedOptions";
 
 const Dashboard = () => {
   const [prompt, setPrompt] = React.useState("");
@@ -85,9 +86,7 @@ const Dashboard = () => {
                       </>
                     )}
                   </Button>
-                  <Button variant="outline" size="icon" title="Configurações avançadas">
-                    <Settings2 className="w-4 h-4" />
-                  </Button>
+                  <AdvancedOptions />
                 </div>
               </div>
 

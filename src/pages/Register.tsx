@@ -1,33 +1,24 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/components/ui/use-toast";
 import Header from "@/components/Header";
 import { Link } from "react-router-dom";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useAuth } from "@/hooks/useAuth";
+import { Loader2 } from "lucide-react";
 
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(false);
-  const navigate = useNavigate();
-  const { toast } = useToast();
+  const { signUp, loading } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Por enquanto apenas simula o registro
-    toast({
-      title: "Registro realizado com sucesso!",
-      description: "Você será redirecionado para a página de login.",
-    });
-    
-    setTimeout(() => {
-      navigate("/login");
-    }, 2000);
+    if (!acceptTerms) return;
+    await signUp(email, password);
   };
 
   return (
@@ -39,10 +30,9 @@ const Register = () => {
           
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="name">Nome completo</Label>
+              <Label htmlFor="name">Nome</Label>
               <Input
                 id="name"
-                type="text"
                 placeholder="Seu nome"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -61,7 +51,7 @@ const Register = () => {
                 required
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="password">Senha</Label>
               <Input
@@ -75,31 +65,45 @@ const Register = () => {
             </div>
 
             <div className="flex items-center space-x-2">
-              <Checkbox
-                id="terms"
+              <Checkbox 
+                id="terms" 
                 checked={acceptTerms}
                 onCheckedChange={(checked) => setAcceptTerms(checked as boolean)}
                 required
               />
               <label
                 htmlFor="terms"
-                className="text-sm text-muted-foreground cursor-pointer"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
-                Eu aceito os termos de uso e política de privacidade
+                Aceito os termos e condições
               </label>
             </div>
 
-            <Button type="submit" className="w-full" disabled={!acceptTerms}>
-              Criar conta
+            <Button 
+              type="submit" 
+              className="w-full"
+              disabled={loading || !acceptTerms}
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Criando conta...
+                </>
+              ) : (
+                'Criar conta'
+              )}
             </Button>
-          </form>
 
-          <div className="mt-6 text-center text-sm">
-            <span className="text-muted-foreground">Já tem uma conta? </span>
-            <Link to="/login" className="text-primary hover:underline">
-              Faça login
-            </Link>
-          </div>
+            <div className="text-center text-sm text-muted-foreground">
+              Já tem uma conta?{" "}
+              <Link 
+                to="/login" 
+                className="text-primary hover:underline"
+              >
+                Entrar
+              </Link>
+            </div>
+          </form>
         </div>
       </div>
     </div>
